@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>首席经济论坛</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body{
+      font-family: Arial, sans-serif;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #333;
+      padding: 15px 20px;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      left: 0;
+      color: white;
+    }
+
+    .navbar .logo {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .navbar ul {
+      list-style: none;
+      display: flex;
+    }
+
+    .navbar ul li {
+      margin: 0 15px;
+    }
+
+    .navbar ul li a {
+      text-decoration: none;
+      color: white;
+      font-size: 16px;
+    }
+
+    .navbar ul li a:hover {
+      text-decoration: underline;
+    }
+
+    .slider {
+      width: 560px;
+      height: 400px;
+      overflow: hidden;
+    }
+
+    .slider-wrapper {
+      width: 100%;
+      height: 320px;
+    }
+
+    .slider-wrapper img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      loading: lazy;
+    }
+
+    .slider-footer {
+      height: 80px;
+      background-color: rgb(100, 67, 68);
+      padding: 12px 12px 0 12px;
+      position: relative;
+    }
+
+    .slider-footer .toggle {
+      position: absolute;
+      right: 0;
+      top: 12px;
+      display: flex;
+    }
+
+    .slider-footer .toggle button {
+      margin-right: 12px;
+      width: 28px;
+      height: 28px;
+      appearance: none;
+      border: none;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .slider-footer .toggle button:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .slider-footer p {
+      margin: 0;
+      color: #fff;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .slider-indicator {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      align-items: center;
+    }
+
+    .slider-indicator li {
+      width: 8px;
+      height: 8px;
+      margin: 4px;
+      border-radius: 50%;
+      background: #fff;
+      opacity: 0.4;
+      cursor: pointer;
+    }
+
+    .slider-indicator li.active {
+      width: 12px;
+      height: 12px;
+      opacity: 1;
+    }
+
+    @media (max-width: 768px) {
+      .navbar ul {
+        flex-direction: column;
+        display: none;
+      }
+      .navbar.active ul {
+        display: flex;
+      }
+      .slider {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar">
+    <div class="logo">首席经济论坛</div>
+    <ul>
+      <li><a href="#">首页</a></li>
+      <li><a href="#">论坛</a></li>
+      <li><a href="#">资讯</a></li>
+      <li><a href="#">关于我们</a></li>
+    </ul>
+  </nav>
+
+  <div class="slider">
+    <div class="slider-wrapper">
+      <img src="./images/c1.png" alt="" loading="lazy"/>
+    </div>
+    <div class="slider-footer">
+      <p>云1</p>
+      <ul class="slider-indicator">
+        <li class="active"></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+      </ul>
+      <div class="toggle">
+        <button class="prev">&lt;</button>
+        <button class="next">&gt;</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    const sliderData = [
+      { url: './images/c1.png', title: '云1', color: 'rgb(100, 67, 68)' },
+      { url: './images/c2.png', title: '云2', color: 'rgb(43, 35, 26)' },
+      { url: './images/c3.png', title: '云3', color: 'rgb(36, 31, 33)' },
+      { url: './images/c4.png', title: '云4', color: 'rgb(139, 98, 66)' },
+      { url: './images/c5.png', title: '云5', color: 'rgb(67, 90, 92)' },
+      { url: './images/c6.png', title: '云6', color: 'rgb(166, 131, 143)' },
+      { url: './images/c7.png', title: '云7', color: 'rgb(53, 29, 25)' },
+      { url: './images/c8.png', title: '云8', color: 'rgb(99, 72, 114)' },
+    ]
+    
+    const img = document.querySelector('.slider-wrapper img')
+    const p = document.querySelector('.slider-footer p')
+    const prevBtn = document.querySelector('.prev')
+    const nextBtn = document.querySelector('.next')
+    const indicators = document.querySelectorAll('.slider-indicator li')
+
+    let i = 0
+    function updateSlider(index) {
+      img.src = sliderData[i].url
+      p.innerHTML = sliderData[i].title
+      document.querySelector('.slider-indicator .active').classList.remove('active')
+      indicators[index].classList.add('active')
+    }
+    
+    prevBtn.addEventListener('click', () => {
+      i = (i - 1 + sliderData.length) % sliderData.length
+      updateSlider(i)
+    })
+
+    nextBtn.addEventListener('click', () => {
+      i = (i + 1) % sliderData.length
+      updateSlider(i)
+    })
+
+    indicators.forEach((indicator, index) => {
+      indicator.addEventListener('click', () => {
+        i = index
+        updateSlider(i)
+      })
+    })
+
+    setInterval(() => {
+      i = (i + 1) % sliderData.length
+      updateSlider(i)
+    }, 2000)
+  </script>
+</body>
+
+</html>
